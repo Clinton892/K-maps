@@ -1,0 +1,89 @@
+"""
+Author: Clinton
+Description: Python script to solve the maxterms and minterms of a Karnaugh map (K-map).
+The code generates minterms and maxterms based on the truth table input.
+"""
+
+from itertools import product
+
+# Function to generate binary combinations for given number of variables
+def generate_combinations(num_vars):
+    """
+    Generate all possible binary combinations for the given number of variables.
+
+    Parameters:
+    num_vars (int): Number of variables in the K-map.
+
+    Returns:
+    List of tuples representing binary combinations.
+    """
+    return list(product([0, 1], repeat=num_vars))
+
+# Function to get minterms (positions where the output is 1)
+def get_minterms(truth_table):
+    """
+    Find the minterms from the truth table.
+
+    Parameters:
+    truth_table (list of tuples): Each tuple contains input combinations followed by the output.
+
+    Returns:
+    List of minterm indices where output is 1.
+    """
+    minterms = [i for i, row in enumerate(truth_table) if row[-1] == 1]
+    return minterms
+
+# Function to get maxterms (positions where the output is 0)
+def get_maxterms(truth_table):
+    """
+    Find the maxterms from the truth table.
+
+    Parameters:
+    truth_table (list of tuples): Each tuple contains input combinations followed by the output.
+
+    Returns:
+    List of maxterm indices where output is 0.
+    """
+    maxterms = [i for i, row in enumerate(truth_table) if row[-1] == 0]
+    return maxterms
+
+# Function to generate the truth table for K-map
+def generate_truth_table(num_vars, outputs):
+    """
+    Generate a truth table from given output values.
+
+    Parameters:
+    num_vars (int): Number of variables.
+    outputs (list): List of output values (0 or 1).
+
+    Returns:
+    Truth table as a list of tuples.
+    """
+    combinations = generate_combinations(num_vars)
+    truth_table = [comb + (output,) for comb, output in zip(combinations, outputs)]
+    return truth_table
+
+# Main section to demonstrate the script
+def main():
+    # Example with 3 variables and user-defined outputs for demonstration purposes
+    num_vars = 3
+    outputs = [0, 1, 1, 0, 1, 0, 1, 0]  # Example outputs for 3 variables (2^3 = 8 combinations)
+
+    # Generate the truth table
+    truth_table = generate_truth_table(num_vars, outputs)
+    
+    # Print the truth table
+    print("Truth Table:")
+    for row in truth_table:
+        print(row)
+    
+    # Get minterms and maxterms
+    minterms = get_minterms(truth_table)
+    maxterms = get_maxterms(truth_table)
+
+    # Display the minterms and maxterms
+    print("\nMinterms (Output = 1):", minterms)
+    print("Maxterms (Output = 0):", maxterms)
+
+if __name__ == "__main__":
+    main()
